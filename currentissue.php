@@ -7,7 +7,7 @@
 <HEAD>
 
 <LINK REL = Stylesheet HREF= "mystylesheet2.css" TYPE = "text/css" MEDIA = screen >
-<TITLE>Journal Of Fictional Studies: External Links</TITLE>
+<TITLE>Journal Of Fictional Studies: Current Issue</TITLE>
 </HEAD>
 
 <BODY>
@@ -36,7 +36,7 @@
 	    
 	 }
 
-	 $sql="select * from jnl_url;";
+	 $sql="select * from jfs where issue = (select max(issue) from jfs) order by page asc ;";
 	 
 	 $result_set = pg_Exec($conn, $sql);
 	 $rows = pg_NumRows($result_set);
@@ -48,20 +48,29 @@
 	 if(($result_set) && ($rows > 0)) {
 	     echo "Got $rows rows of data. ";
 	 }
+
          ?>
          </P>
          <HR>
          <HR>
-	 <P class="p1">Associated journals</P>
+	 <P class="p1">Current Issue contents</P>
 	 <HR>
 	 <HR>
          <?php         
          for($j=0; $j < $rows; $j++)
 	     {
-		$jnl = pg_result($result_set, $j, "jnl");
+		$issue = pg_result($result_set, $j, "issue");
+                $page = pg_result($result_set, $j, "page");
+                $title = pg_result($result_set, $j, "title");
+                $author = pg_result($result_set, $j, "author");
+                $format = pg_result($result_set, $j, "format");
                 $url = pg_result($result_set, $j, "url");
+	     
        ?></P>
-       <P class="p1"><?php echo $jnl ?><P>
+       <P class="p3">Issue <?php echo $issue ?>, page <?php echo $page ?></P>
+       <P class="p1"><?php echo $title ?><P>
+       <P class="p2"><?php echo $author ?><P>
+       <P class="p3">Available in: <?php echo $format ?></P>
        <P class="p4"><A HREF="<?php echo $url ?>"><?php echo $url ?></A></P>
        <HR>
        <?php } ?>

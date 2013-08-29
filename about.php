@@ -92,6 +92,10 @@
 	   <P>
 	   <IMG class="displayed" src="/img8.png">
 	   </P>
+	   <P>
+	   Known problems:<BR>
+	   - Logo displays on the left of its container on Internet Explorer 9, rather than in the middle. No change in appearance or functionality in Linux: Firefox and Epiphany, Windows: Chrome, Opera and Safari.<BR>
+	   </P>
        <P>
        [1] W3C. (unknown). HTML declaration. Available: http://www.w3schools.com/tags/tag_doctype.asp. Last accessed 11th Jan 2013.<BR>
        [2] http://www.webstandards.org/learn/tutorials/common_ideas/

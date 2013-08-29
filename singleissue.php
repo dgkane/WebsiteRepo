@@ -7,7 +7,7 @@
 <HEAD>
 
 <LINK REL = Stylesheet HREF= "mystylesheet2.css" TYPE = "text/css" MEDIA = screen >
-<TITLE>Journal Of Fictional Studies: External Links</TITLE>
+<TITLE>Journal Of Fictional Studies: Single Issue</TITLE>
 </HEAD>
 
 <BODY>
@@ -16,7 +16,7 @@
   <div id="header"><IMG class="displayed" src="/logo.png"></div>
   <div id="content">
     <div id="content-left">
-      <P class="p1"><A HREF="/currentissue.php">Current Issue</A></P>
+    <P class="p1"><A HREF="/currentissue.php">Current Issue</A></P>
       <P class="p1"><A HREF="/previssues.php">Previous Issues</A></P>
       <P class="p1"><A HREF="/externallinks.php">External Links</A></P>
       <P class="p1"><A HREF="/about.php">About</A></P>
@@ -24,6 +24,8 @@
    <div id="content-middle">
        <P class="p4">
        <?php
+         $selectedissue = $_REQUEST['selectedissue'];
+	 
          $conn = pg_connect("host=pgdbs8 user=wwwuser 
                   dbname=dwt password=wwwuser");
 
@@ -36,7 +38,7 @@
 	    
 	 }
 
-	 $sql="select * from jnl_url;";
+	 $sql="select * from jfs where issue = '".$selectedissue."' order by page asc ;";
 	 
 	 $result_set = pg_Exec($conn, $sql);
 	 $rows = pg_NumRows($result_set);
@@ -51,21 +53,30 @@
          ?>
          </P>
          <HR>
-         <HR>
-	 <P class="p1">Associated journals</P>
+	 <HR>
+	 <P class="p1">Issue <?php echo $selectedissue ?> contents</P>
 	 <HR>
 	 <HR>
          <?php         
          for($j=0; $j < $rows; $j++)
 	     {
-		$jnl = pg_result($result_set, $j, "jnl");
+		$issue = pg_result($result_set, $j, "issue");
+                $page = pg_result($result_set, $j, "page");
+                $title = pg_result($result_set, $j, "title");
+                $author = pg_result($result_set, $j, "author");
+                $format = pg_result($result_set, $j, "format");
                 $url = pg_result($result_set, $j, "url");
+	     
        ?></P>
-       <P class="p1"><?php echo $jnl ?><P>
+       <P class="p3">Issue <?php echo $issue ?>, page <?php echo $page ?></P>
+       <P class="p1"><?php echo $title ?><P>
+       <P class="p2"><?php echo $author ?><P>
+       <P class="p3">Available in: <?php echo $format ?></P>
        <P class="p4"><A HREF="<?php echo $url ?>"><?php echo $url ?></A></P>
        <HR>
        <?php } ?>
        
+	
     </div>
    <div id="content-right">
    <P class="p1">Search</P>
@@ -89,3 +100,4 @@
 </BODY>
 
 </HTML>
+

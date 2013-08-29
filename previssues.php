@@ -7,7 +7,7 @@
 <HEAD>
 
 <LINK REL = Stylesheet HREF= "mystylesheet2.css" TYPE = "text/css" MEDIA = screen >
-<TITLE>Journal Of Fictional Studies: External Links</TITLE>
+<TITLE>Journal Of Fictional Studies: Previous Issues</TITLE>
 </HEAD>
 
 <BODY>
@@ -16,7 +16,7 @@
   <div id="header"><IMG class="displayed" src="/logo.png"></div>
   <div id="content">
     <div id="content-left">
-      <P class="p1"><A HREF="/currentissue.php">Current Issue</A></P>
+    <P class="p1"><A HREF="/currentissue.php">Current Issue</A></P>
       <P class="p1"><A HREF="/previssues.php">Previous Issues</A></P>
       <P class="p1"><A HREF="/externallinks.php">External Links</A></P>
       <P class="p1"><A HREF="/about.php">About</A></P>
@@ -36,7 +36,7 @@
 	    
 	 }
 
-	 $sql="select * from jnl_url;";
+	 $sql="select distinct issue from jfs order by issue desc;";
 	 
 	 $result_set = pg_Exec($conn, $sql);
 	 $rows = pg_NumRows($result_set);
@@ -52,17 +52,15 @@
          </P>
          <HR>
          <HR>
-	 <P class="p1">Associated journals</P>
+	 <P class="p1">All previous issues:</P>
 	 <HR>
 	 <HR>
          <?php         
          for($j=0; $j < $rows; $j++)
 	     {
-		$jnl = pg_result($result_set, $j, "jnl");
-                $url = pg_result($result_set, $j, "url");
+		$issue = pg_result($result_set, $j, "issue");
        ?></P>
-       <P class="p1"><?php echo $jnl ?><P>
-       <P class="p4"><A HREF="<?php echo $url ?>"><?php echo $url ?></A></P>
+       <P class="p1"><A HREF="singleissue.php?selectedissue=<?php echo $issue ?>">Issue <?php echo $issue ?></A><P>
        <HR>
        <?php } ?>
        

@@ -7,7 +7,7 @@
 <HEAD>
 
 <LINK REL = Stylesheet HREF= "mystylesheet2.css" TYPE = "text/css" MEDIA = screen >
-<TITLE>Journal Of Fictional Studies: External Links</TITLE>
+<TITLE>3 Column XHTML/CSS layout test</TITLE>
 </HEAD>
 
 <BODY>
@@ -16,10 +16,11 @@
   <div id="header"><IMG class="displayed" src="/logo.png"></div>
   <div id="content">
     <div id="content-left">
-      <P class="p1"><A HREF="/currentissue.php">Current Issue</A></P>
-      <P class="p1"><A HREF="/previssues.php">Previous Issues</A></P>
-      <P class="p1"><A HREF="/externallinks.php">External Links</A></P>
-      <P class="p1"><A HREF="/about.php">About</A></P>
+      <P>Current Issue</P>
+      <P>Previous Issues</P>
+      <P>Search Journals</P>
+      <P>External Links</P>
+      <P>About</P>
     </div>
    <div id="content-middle">
        <P class="p4">
@@ -29,6 +30,7 @@
 
          if (!$conn) {
              echo "An error occured.\n";
+             exit;
          }
 
 	 if($conn) {
@@ -36,13 +38,14 @@
 	    
 	 }
 
-	 $sql="select * from jnl_url;";
+	 $sql="select * from jfs where issue = (select max(issue) from jfs) ;";
 	 
 	 $result_set = pg_Exec($conn, $sql);
 	 $rows = pg_NumRows($result_set);
 
 	 if ((!$result_set) || ($rows < 1)) {
               echo "No result. ";
+              exit;  //exit the script
 	 }
 
 	 if(($result_set) && ($rows > 0)) {
@@ -52,37 +55,35 @@
          </P>
          <HR>
          <HR>
-	 <P class="p1">Associated journals</P>
-	 <HR>
-	 <HR>
          <?php         
          for($j=0; $j < $rows; $j++)
 	     {
-		$jnl = pg_result($result_set, $j, "jnl");
+		$issue = pg_result($result_set, $j, "issue");
+                $page = pg_result($result_set, $j, "page");
+                $title = pg_result($result_set, $j, "title");
+                $author = pg_result($result_set, $j, "author");
+                $format = pg_result($result_set, $j, "format");
                 $url = pg_result($result_set, $j, "url");
+	     
        ?></P>
-       <P class="p1"><?php echo $jnl ?><P>
-       <P class="p4"><A HREF="<?php echo $url ?>"><?php echo $url ?></A></P>
+       <P class="p3">Issue <?php echo $issue ?>, page <?php echo $page ?></P>
+       <P class="p1"><?php echo $title ?><P>
+       <P class="p2"><?php echo $author ?><P>
+       <P class="p4"><?php echo $url ?></P>
+       <P class="p3">Available in: <?php echo $format ?></P>
        <HR>
        <?php } ?>
-       
+       <P class="p4"><BR>The Journal of Fictional Studies is published by the Institute for Fictional Affairs.</P>
+       <P class="p4">Created for Deploying Web Technologies, Computer Science for Games (Stage 3) BSc.<BR>
+	  Author: David Kane, U0B 10014264, <A HREF="mailto:dgkane@student.bradford.ac.uk">email</A><P>
     </div>
    <div id="content-right">
-   <P class="p1">Search</P>
-   <P><FORM name="title" method="post" action="searchtitle.php">
-      <INPUT type="text" name="titlequery">
-      <INPUT type="submit" value="Search by Article Title">
-      </FORM></P>
-    <P><FORM name="author" method="post" action="searchauthor.php">
-      <INPUT type="text" name="authorquery">
-      <INPUT type="submit" value="Search by Author">
-      </FORM></P>
+      <p>Right column element</p>
+      <p>Right column element</p>
+      <p>Right column element</p>
     </div>
  </div>
- <div id="footer"><P class="p4"><BR>The Journal of Fictional Studies is published by the Institute for Fictional Affairs.</P>
-       <P class="p4">Created for Deploying Web Technologies, Computer Science for Games (Stage 3) BSc.<BR>
-	  Author: David Kane, U0B 10014264, <A HREF="mailto:dgkane@student.bradford.ac.uk">email</A></P>
- </div>
+ <div id="footer">Footer</div>
 </div>      
 
 

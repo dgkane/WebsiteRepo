@@ -7,7 +7,7 @@
 <HEAD>
 
 <LINK REL = Stylesheet HREF= "mystylesheet2.css" TYPE = "text/css" MEDIA = screen >
-<TITLE>3 Column XHTML/CSS layout test</TITLE>
+<TITLE>Journal Of Fictional Studies: Home</TITLE>
 </HEAD>
 
 <BODY>
@@ -29,7 +29,6 @@
 
          if (!$conn) {
              echo "An error occured.\n";
-             exit;
          }
 
 	 if($conn) {
@@ -44,7 +43,6 @@
 
 	 if ((!$result_set) || ($rows < 1)) {
               echo "No result. ";
-              exit;  //exit the script
 	 }
 
 	 if(($result_set) && ($rows > 0)) {
